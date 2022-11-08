@@ -2,7 +2,7 @@ import express from 'express';
 import path from "path";
 import * as routes from "./routes";
 
-const port = process.env.SERVER_PORT || 3000;
+const port = process.env.PORT || 3000;
 let app = express();
 
 app.use(express.json());
