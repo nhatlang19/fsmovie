@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>OpenStreetMap &amp; OpenLayers - Marker Example</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+	<script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://viglino.github.io/ol-ext/dist/ol-ext.css" />
+  <script type="text/javascript" src="https://viglino.github.io/ol-ext/dist/ol-ext.js"></script>
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  
+ 
+  <script>
+    var locations = [];
+    var map;
+    var mapLat = 37.773972;
+    var mapLng = -122.431297;
+    var mapDefaultZoom = 15;
+    
+    function initialize_map() {
+        map = new ol.Map({
+            target: "map",
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM({
+                        url: "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    })
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([mapLng, mapLat]),
+                zoom: 12
+            })
+        });
+        // GeoJSON layer
+        var vectorSource = new ol.source.Vector({
+            url: './data/locations.geojson',
+            projection: 'EPSG:3857',
+            format: new ol.format.GeoJSON(),
+            logo:"./img/location.png" 
+        });
+
+        map.addLayer(new ol.layer.Vector({
+            name: '',
+            source: vectorSource,
+            style: new ol.style.Style({ image: new ol.style.Icon({ src:"../img/location.png", scale: 0.05 }) })
+        }));
+
+        // Control Select 
+        var select = new ol.interaction.Select({});
+        map.addInteraction(select);
+
+        // Set the control grid reference
+        var search = new ol.control.SearchFeature({
+            source: vectorSource,
+            property: 'locations'
+        });
+        map.addControl (search);
+
+        // Select feature when click on the reference index
+        search.on('select', function(e) {
+            select.getFeatures().clear();
+            select.getFeatures().push (e.search);
+            var p = e.search.getGeometry().getFirstCoordinate();
+            map.getView().animate({ center:p });
+        });
+    }
+    </script>
+  
+</head>
+<body onload="initialize_map()">
+  <div id="map" style="width: 100vw; height: 100vh;"></div>
+</body>
+</html>
