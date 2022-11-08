@@ -1,5 +1,8 @@
 gen-geo-code:
 	npm run generate-geo-code
 
-start:
+dev:
 	npm run dev
+
+start:
+	npm run start
