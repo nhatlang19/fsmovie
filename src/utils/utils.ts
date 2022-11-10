@@ -12,8 +12,9 @@ export const getLocation = (url: any, uuid: any) => {
     process.exit(0);
   }
 
+  let chromePath = process.env.CHROME_BINARY_PATH || '/app/.apt/opt/google/chrome/chrome'
   let command;
-  command = '"' + process.env.CHROME_BINARY_PATH + '"' + ` --headless --dump-dom "${url}"`;
+  command = '"' + chromePath + '"' + ` --no-sandbox --headless --dump-dom "${url}"`;
 
   console.log(`executing command: ${command}`);
 
