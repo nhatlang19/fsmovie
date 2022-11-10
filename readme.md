@@ -12,6 +12,7 @@
 ### HOW TO USE ###
 
 - RUN `npm install`
+- RUN `cp .env.example .env` and update `CHROME_BINARY_PATH`
 - RUN `npm run dev` and open `http://localhost:3000`
 - To re-generate locations.geojson, RUN `npm run generate-geo-code`
 
