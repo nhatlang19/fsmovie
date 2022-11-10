@@ -46,7 +46,7 @@ async function generate_geo_code() {
     const data = await fetch('https://data.sfgov.org/resource/yitu-d5am.json');
     let films = await data.json();
 
-    let offset = 0, n = 30, limit = 10;
+    let offset = 0, n = films.length, limit = 10;
     let locations: string | any[] = [];
     while (offset + limit <= n) {
         locations = locations.concat.apply(locations, await Promise.all(films.slice(offset, offset + limit).map(handleLocation)));
