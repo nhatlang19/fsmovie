@@ -42,25 +42,11 @@ async function handleLocation(f: any) {
     }
 }
 
-async function generate_geo_code() {
-    const data = await fetch('https://data.sfgov.org/resource/yitu-d5am.json');
-    let films = await data.json();
-
-    let offset = 0, n = films.length, limit = 10;
-    let locations: string | any[] = [];
-    while (offset + limit <= n) {
-        locations = locations.concat.apply(locations, await Promise.all(films.slice(offset, offset + limit).map(handleLocation)));
-        offset = offset + limit;
-        console.log(locations.length);
-    }
-    await writeCache(locations);
-}
-
 async function writeCache(locations: any) {
     if (fs.existsSync(`./src/public/data/locations.geojson`)) { 
         fs.unlinkSync(`./src/public/data/locations.geojson`);
     }
-    console.log(locations);
+    // console.log(locations);
     let json = {
         type: "FeatureCollection",
         features: [...locations.filter((l: any) => l)]
@@ -72,5 +58,20 @@ async function writeCache(locations: any) {
         }
       });
 }
+
+
+async function generate_geo_code() {
+    const data = await fetch('https://data.sfgov.org/resource/yitu-d5am.json');
+    let films = await data.json();
+
+    let offset = 0, n = films.length, limit = 10;
+    let locations: string | any[] = [];
+    while (offset + limit <= n) {
+        locations = locations.concat.apply(locations, await Promise.all(films.slice(offset, offset + limit).map(handleLocation)));
+        offset = offset + limit;
+    }
+    await writeCache(locations);
+}
+
 
 generate_geo_code();

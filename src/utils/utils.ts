@@ -8,7 +8,6 @@ export const getLocation = (url: any, uuid: any) => {
 
 
   if (url === undefined) {
-    console.error('Please enter a URL, e.g. "http://www.opencanvas.co.uk"');
     process.exit(0);
   }
 
