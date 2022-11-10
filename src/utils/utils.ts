@@ -13,7 +13,7 @@ export const getLocation = (url: any, uuid: any) => {
   }
 
   let command;
-  command = '"' + process.env.CHROME_PATH + '"' + ` --headless --dump-dom "${url}"`;
+  command = '"' + process.env.CHROME_BINARY_PATH + '"' + ` --headless --dump-dom "${url}"`;
 
   console.log(`executing command: ${command}`);
 
